@@ -94,6 +94,14 @@ class View {
     // Append the application with title, form and todo list
     this.app.append(this.title, this.form, this.todoList);
   }
+
+  get _todoText() {
+    return this.input.value;
+  }
+
+  _resetInput() {
+    this.input.value = '';
+  }
 }
 
 class Controller {
