@@ -111,7 +111,7 @@ class View {
   displayTodos(todos) {
     // Delete all nodes
     while (this.todoList.firstChild) {
-      this.todoList.firstChild(this.todoList.firstChild);
+      this.todoList.removeChild(this.todoList.firstChild);
     }
 
     if (todos.length === 0) {
