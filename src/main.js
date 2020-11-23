@@ -102,6 +102,63 @@ class View {
   _resetInput() {
     this.input.value = '';
   }
+
+  // DisplayTodos method is called with todos parameter 
+  // from the Model Class everytime, when the todos list 
+  // is changed. Display method creates ul and lis with the todos.
+  // This sync implementation allows always to show the last state 
+  // of the data.
+  displayTodos(todos) {
+    // Delete all nodes
+    while (this.todoList.firstChild) {
+      this.todoList.firstChild(this.todoList.firstChild);
+    }
+
+    if (todos.length === 0) {
+  
+      // Show default message
+      const p = this.createElement('p');
+      p.textContent = 'Nothing to do. Add a task?';
+      this.todoList.append(p);
+  
+    } else {
+      // Loop through all the todos and display 
+      // a checkbox, span and delete button.
+
+      todos.forEach(todo => {
+        const li = this.createElement('li');
+        li.id = todo.id;
+
+        // add a checkbox
+        const checkbox = this.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = todo.complete;
+
+        // add a contenteditable span with todo text
+        const span = this.createElement('span', 'editable');
+        span.contentEditable = true;
+
+        // if the todo is complete, the span should have a strickthrough
+        if (todo.complete) {
+          const s = this.createElement('s');
+          s.textContent = todo.text;
+          span.append(s);
+        } else {
+          span.textContent = todo.text;
+        }
+
+        // add a delete button
+        const deleteButton = this.createElement('button', 'delete');
+        deleteButton.textContent = 'Delete';
+
+        // append the li with the ckeckbox, the span and the delete button
+        li.append(checkbox, span, deleteButton);
+
+        // append todoList with the li
+        this.todoList.append(li);
+      });
+    }
+  }
 }
 
 class Controller {
