@@ -113,6 +113,10 @@ class View {
 
     // Append the application with title, form and todo list
     this.app.append(this.title, this.form, this.todoList);
+
+    // ---
+    this._bufferedText = '';
+    this._setHandlerTodoOnEditing(); 
   }
 
   get _todoText() {
@@ -213,6 +217,26 @@ class View {
       }
     })
   }
+
+  // Update temporary state
+  _setHandlerTodoOnEditing() {
+    this.todoList.addEventListener('input', (event) => {
+      if (event.target.className === 'editable') {
+        this._bufferedText = event.target.textContent;
+      }
+    })
+  }
+
+  bindEditTodo(handler) {
+    this.todoList.addEventListener('focusout', (event) => {
+      if (event.target.className === 'editable' && this._bufferedText) {
+        const id = parseInt(event.target.parentElement.id);
+
+        handler(id, this._bufferedText);
+        this._bufferedText = '';
+      }      
+    })
+  }
 }
 
 class Controller {
@@ -228,6 +252,7 @@ class Controller {
     this.view.bindAddTodo( this.handleAddTodo.bind(this) );
     this.view.bindDeleteTodo( this.handleDeleteTodo.bind(this) );
     this.view.bindToggleTodo( this.handleToggleTodo.bind(this) );
+    this.view.bindEditTodo( this.handleEditTodo.bind(this) );
 
     this.model.bindTodoListChanged(this.onTodoListChanged.bind(this));
   }
@@ -253,6 +278,7 @@ class Controller {
   handleToggleTodo(id)  {
     this.model.toggleTodo(id);
   }
+
 }
 
 const app = new Controller(new Model(), new View());
