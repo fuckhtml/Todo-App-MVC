@@ -176,7 +176,7 @@ class View {
 
   bindDeleteTodo (handler) {
     this.todoList.addEventListener('click', (event) => {
-      if (event.target.className = 'delete') {
+      if (event.target.className === 'delete') {
         const id = parseInt(event.target.parentElement.id);
 
         handler(id);
@@ -186,7 +186,7 @@ class View {
 
   bindToggleTodo (handler) {
     this.todoList.addEventListener('click', (event) => {
-      if (event.target.type = 'checkbox') {
+      if (event.target.type === 'checkbox') {
         const id = parseInt(event.target.parentElement.id);
 
         handler(id);
