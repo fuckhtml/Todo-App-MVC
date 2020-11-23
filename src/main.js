@@ -19,6 +19,8 @@ class Model {
     }
 
     this.todos.push(todo);
+
+    this.onTodoListChanged();
   }
 
   // 2. Second method to manipulate
@@ -27,12 +29,14 @@ class Model {
     this.todos = this.todos.map((todo) => 
       todo.id === id ? {id: id, text: text, complete: todo.complete} : todo
     )
+    this.onTodoListChanged();
   }
 
   // 3. Third method to manipulate
   //    its own data
   deleteTodo(id) {
     this.todos = this.todos.filter((todo) => todo.id !== id);
+    this.onTodoListChanged();
   }
 
   // 4. Fourth method to manipulate
@@ -41,6 +45,13 @@ class Model {
     this.todos = this.todos.map((todo) => 
       todo.id === id ? {id: todo.id, text: todo.text, complete: !todo.complete} : todo
     )
+    this.onTodoListChanged();
+  }
+
+  bindTodoListChanged(callback) {
+    this.onTodoListChanged = function() {
+      callback(this.todos);
+    }
   }
 }
 
@@ -196,10 +207,6 @@ class View {
 }
 
 class Controller {
-  onTodoListChanged = (todos) => {
-    this.view.displayTodos(todos);
-  }
-
   constructor(model, view) {
     this.model = model;
     this.view = view;
@@ -212,6 +219,12 @@ class Controller {
     this.view.bindAddTodo( this.handleAddTodo.bind(this) );
     this.view.bindDeleteTodo( this.handleDeleteTodo.bind(this) );
     this.view.bindToggleTodo( this.handleToggleTodo.bind(this) );
+
+    this.model.bindTodoListChanged(this.onTodoListChanged.bind(this));
+  }
+
+  onTodoListChanged(todos) {
+    this.view.displayTodos(todos);
   }
 
   // # One of the most important part
