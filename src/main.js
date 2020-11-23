@@ -159,6 +159,40 @@ class View {
       });
     }
   }
+
+  //
+  // # One of the most important part
+  // View-Model binding methods
+  bindAddTodo (handler) {
+    this.form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      if (this._todoText) {
+        handler(this._todoText);
+        this._resetInput();
+      }
+    })
+  }
+
+  bindDeleteTodo (handler) {
+    this.todoList.addEventListener('click', (event) => {
+      if (event.target.className = 'delete') {
+        const id = parseInt(event.target.parentElement.id);
+
+        handler(id);
+      }
+    })
+  }
+
+  bindToggleTodo (handler) {
+    this.todoList.addEventListener('click', (event) => {
+      if (event.target.type = 'checkbox') {
+        const id = parseInt(event.target.parentElement.id);
+
+        handler(id);
+      }
+    })
+  }
 }
 
 class Controller {
@@ -172,21 +206,29 @@ class Controller {
 
     // Display Initial TodoList
     this.onTodoListChanged(this.model.todos);
+  
+    // # One of the most important part
+    // Bind Model-View
+    this.view.bindAddTodo( this.handleAddTodo.bind(this) );
+    this.view.bindDeleteTodo( this.handleDeleteTodo.bind(this) );
+    this.view.bindToggleTodo( this.handleToggleTodo.bind(this) );
   }
 
-  handleAddTodo = (todoText) => {
+  // # One of the most important part
+  // View-Model Handlers
+  handleAddTodo(todoText) {
     this.model.addTodo(todoText);
   }
 
-  handleEditTodo = (id, todoText) => {
+  handleEditTodo(id, todoText) {
     this.model.editTodo(id, todoText);
   }
 
-  handleDeleteTodo = (id) => {
+  handleDeleteTodo(id) {
     this.model.deleteTodo(id);
   }
 
-  handleToggleTodo = (id) = {
+  handleToggleTodo(id)  {
     this.model.toggleTodo(id);
   }
 }
