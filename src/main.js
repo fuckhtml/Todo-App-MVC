@@ -45,23 +45,54 @@ class Model {
 }
 
 class View {
-  constructor() {}
-
   // 1. Helper method 1
   //    Create an element
   createElement(tag, className) {
     const element = document.createElement(tag);
-    element.classList.add(className);
+    className && element.classList.add(className);
 
     return element;
   }
 
   // 2. Helper method 2
   //    Retrieve an element
-  retrieveElement(selector) {
+  getElement(selector) {
     const element = document.querySelector(selector);
   
     return element;
+  }
+  
+  constructor() {
+    // Setting up all the things
+    // Root Element. Title h1. Form, input and button. And todos in ul
+    // We'll make them all variables, so it's easy to get access to them
+
+    // Root element
+    this.app = this.getElement('#root');
+
+    // Title h1
+    this.title = this.createElement('h1');
+    this.title.textContent = 'Todos';
+
+    // Form, input and button
+    this.form = this.createElement('form');
+
+    this.input = this.createElement('input');
+    this.input.type = 'text';
+    this.input.placeholder = 'Add todo';
+    this.input.name = 'todo';
+
+    this.submitButton = this.createElement('button');
+    this.submitButton.textContent = 'Submit';
+
+    // Visual representation of todo list
+    this.todoList = this.createElement('ul', 'todo-list');
+
+    // Append the form with input and submit button
+    this.form.append(this.input, this.submitButton);
+
+    // Append the application with title, form and todo list
+    this.app.append(this.title, this.form, this.todoList);
   }
 }
 
