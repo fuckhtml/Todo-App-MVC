@@ -162,7 +162,7 @@ class View {
 }
 
 class Controller {
-  onTodoListChanged(todos) {
+  onTodoListChanged = (todos) => {
     this.view.displayTodos(todos);
   }
 
@@ -172,6 +172,22 @@ class Controller {
 
     // Display Initial TodoList
     this.onTodoListChanged(this.model.todos);
+  }
+
+  handleAddTodo = (todoText) => {
+    this.model.addTodo(todoText);
+  }
+
+  handleEditTodo = (id, todoText) => {
+    this.model.editTodo(id, todoText);
+  }
+
+  handleDeleteTodo = (id) => {
+    this.model.deleteTodo(id);
+  }
+
+  handleToggleTodo = (id) = {
+    this.model.toggleTodo(id);
   }
 }
 
