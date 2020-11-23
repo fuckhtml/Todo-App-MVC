@@ -46,6 +46,23 @@ class Model {
 
 class View {
   constructor() {}
+
+  // 1. Helper method 1
+  //    Create an element
+  createElement(tag, className) {
+    const element = document.createElement(tag);
+    element.classList.add(className);
+
+    return element;
+  }
+
+  // 2. Helper method 2
+  //    Retrieve an element
+  retrieveElement(selector) {
+    const element = document.querySelector(selector);
+  
+    return element;
+  }
 }
 
 class Controller {
