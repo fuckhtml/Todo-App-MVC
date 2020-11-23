@@ -162,9 +162,16 @@ class View {
 }
 
 class Controller {
+  onTodoListChanged(todos) {
+    this.view.displayTodos(todos);
+  }
+
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
+    // Display Initial TodoList
+    this.onTodoListChanged(this.model.todos);
   }
 }
 
