@@ -3,10 +3,11 @@ class Model {
   //    an array of todo objects, 
   //    prepopulated with some data
   constructor() {
-    this.todos = [
-      {id: 1, text: 'Learn 10 new words', complete: false},
-      {id: 2, text: 'Translate a song', complete: false},
-    ];
+    this.todos = JSON.parse(window.localStorage.getItem('todos')) || [];
+    // this.todos = [
+    //   {id: 1, text: 'Learn 10 new words', complete: false},
+    //   {id: 2, text: 'Translate a song', complete: false},
+    // ];
   }
 
   // 1. First method to manipulate 
@@ -29,6 +30,7 @@ class Model {
     this.todos = this.todos.map((todo) => 
       todo.id === id ? {id: id, text: text, complete: todo.complete} : todo
     )
+
     this.onTodoListChanged();
   }
 
@@ -36,6 +38,7 @@ class Model {
   //    its own data
   deleteTodo(id) {
     this.todos = this.todos.filter((todo) => todo.id !== id);
+
     this.onTodoListChanged();
   }
 
@@ -45,13 +48,19 @@ class Model {
     this.todos = this.todos.map((todo) => 
       todo.id === id ? {id: todo.id, text: todo.text, complete: !todo.complete} : todo
     )
+
     this.onTodoListChanged();
   }
 
   bindTodoListChanged(callback) {
     this.onTodoListChanged = function() {
       callback(this.todos);
+      this._commit();
     }
+  }
+
+  _commit() {
+    window.localStorage.setItem('todos', JSON.stringify(this.todos));
   }
 }
 
